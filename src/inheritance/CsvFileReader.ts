@@ -1,10 +1,9 @@
 import fs from 'fs'
 
-/**
- * In this approach, CsvFileReader implements the interface DataReader
- */
-export class CsvFileReader {
-  data: string[][] = []
+export abstract class CsvFileReader<T> {
+  data: T[] = []
+
+  abstract mapRow(row: string[]): T
 
   constructor(public filename: string) {}
 
@@ -15,5 +14,6 @@ export class CsvFileReader {
       })
       .split('\n')
       .map((row: string): string[] => row.split(','))
+      .map(this.mapRow)
   }
 }
